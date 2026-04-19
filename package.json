@@ -1,6 +1,6 @@
 {
   "name": "pcshop-admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PC Shop Admin Desktop Application",
   "main": "main.js",
   "repository": {
