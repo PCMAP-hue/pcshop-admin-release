@@ -1,0 +1,59 @@
+{
+  "name": "pcshop-admin",
+  "version": "1.0.0",
+  "description": "PC Shop Admin Desktop Application",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PCMAP-hue/pcshop-admin-release.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder -w",
+    "publish": "electron-builder --publish always"
+  },
+  "build": {
+    "appId": "com.pcshop.admin",
+    "productName": "PC매장관리시스템",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "app_icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
+      "shortcutName": "PC매장관리시스템",
+      "createDesktopShortcut": true,
+      "installerIcon": "app_icon.ico",
+      "uninstallerIcon": "app_icon.ico",
+      "artifactName": "pcshop_install.${ext}",
+      "perMachine": false,
+      "allowElevation": true
+    },
+    "files": [
+      "**/*",
+      "!data/**/*",
+      "!dist/**/*",
+      "!.vscode/**/*",
+      "!package-lock.json"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "PCMAP-hue",
+        "repo": "pcshop-admin-release"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.7"
+  }
+}

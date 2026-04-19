@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-native/
+build/
+.firebase/
+firebase-debug.log*
+.firebaserc
+firebase.json
+*.ico
+gh_token.txt
