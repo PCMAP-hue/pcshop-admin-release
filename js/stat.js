@@ -205,15 +205,30 @@
         if(detailListContainer) {
             if(detailList.length === 0) detailListContainer.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">표시할 내역이 없습니다.</div>`;
             else {
-                detailListContainer.innerHTML = detailList.sort((a,b) => new Date(b.date) - new Date(a.date)).map(item => `
-                    <div class="list-row" style="padding: 12px 24px; border-bottom: 1px solid var(--border-color); cursor: default;">
+                const header = renderListHeader([
+                    { name: '날짜', class: 'col-s' },
+                    { name: '구분', class: 'col-xs', align: 'center' },
+                    { name: '카테고리', class: 'col-s' },
+                    { name: '대상(고객/매입처)', class: 'col-m' },
+                    { name: '내용(품목/사유)', class: 'col-flex' },
+                    { name: '금액', class: 'col-m', align: 'right' }
+                ], 'stat-detail-header');
+
+                detailListContainer.innerHTML = header + detailList.sort((a,b) => new Date(b.date) - new Date(a.date)).map(item => `
+                    <div class="list-row" style="padding: 12px 24px; border-bottom: 1px solid var(--border-color); cursor: default; align-items: center;">
                         <div class="col-s" style="font-size:12px; color:var(--text-muted);">${item.date}</div>
-                        <div class="col-xs"><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${item.type === '매출' ? 'background:rgba(0,113,227,0.1); color:var(--accent);' : 'background:rgba(255,59,48,0.1); color:var(--danger-color);'}">${item.type}</span></div>
-                        <div class="col-s v-bold" style="font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.targetName || '-'}</div>
-                        <div class="col-flex" style="font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:12px;">${item.itemName}</div>
-                        <div class="col-m t-right v-bold" style="color:${item.type === '매출' ? 'var(--text-color)' : 'var(--danger-color)'};">${item.type === '매출' ? '+' : '-'}${item.amount.toLocaleString()}</div>
+                        <div class="col-xs">
+                            <span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${item.type === '매출' ? 'background:rgba(0,113,227,0.1); color:var(--accent);' : 'background:rgba(255,59,48,0.1); color:var(--danger-color);'}">${item.type}</span>
+                        </div>
+                        <div class="col-s c-muted" style="font-size:12px;">${item.category}</div>
+                        <div class="col-m v-bold" style="font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.targetName || ''}</div>
+                        <div class="col-flex" style="font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-left:10px;">${item.itemName}</div>
+                        <div class="col-m t-right v-bold" style="color:${item.type === '매출' ? 'var(--text-color)' : 'var(--danger-color)'}; font-size:15px;">
+                            ${item.type === '매출' ? '+' : '-'}${parseInt(item.amount).toLocaleString()}
+                        </div>
                     </div>
                 `).join('');
+                applyColumnWidths('stat-detail-list', 'stat-detail-header');
             }
         }
         window.updateStatChart();
@@ -691,8 +706,8 @@
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${item.date}</Data></Cell>
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${item.type}</Data></Cell>
     <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.category)}</Data></Cell>
-    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.targetName || '-')}</Data></Cell>
-    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.itemName || '-')}</Data></Cell>
+    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.targetName || '')}</Data></Cell>
+    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${escapeXml(item.itemName || '')}</Data></Cell>
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${pm}</Data></Cell>
     <Cell ss:StyleID="${amtStyle}"><Data ss:Type="Number">${item.amount}</Data></Cell>
    </Row>`;
@@ -762,7 +777,7 @@
    <Row ss:Height="18">
     <Cell ss:StyleID="TblCellCenter"><Data ss:Type="String">${item.date}</Data></Cell>
     <Cell ss:StyleID="TblCell"><Data ss:Type="String">${item.category}</Data></Cell>
-    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${item.targetName || '-'}</Data></Cell>
+    <Cell ss:StyleID="TblCell"><Data ss:Type="String">${item.targetName || ''}</Data></Cell>
     <Cell ss:StyleID="TblCellMoney"><Data ss:Type="Number">${item.amount}</Data></Cell>
    </Row>`;
             });
@@ -921,7 +936,7 @@
         document.getElementById('tpl-report-title').textContent = typeLabels[type];
         document.getElementById('tpl-report-period').textContent = data.period;
         document.getElementById('tpl-report-shop-name').textContent = shop.shopName || '매장 정보 없음';
-        document.getElementById('tpl-report-shop-tel').textContent = '연락처: ' + (shop.tel || '-');
+        document.getElementById('tpl-report-shop-tel').textContent = '연락처: ' + (shop.tel || '');
         
         document.getElementById('tpl-report-total-rev').textContent = '+' + data.totalRev.toLocaleString() + '원';
         document.getElementById('tpl-report-total-buy').textContent = '-' + data.partsCost.toLocaleString() + '원';
@@ -1006,7 +1021,7 @@
                     <tr style="border-bottom:1px solid #f5f5f7;">
                         <td style="padding:8px 10px;">${item.date.slice(5)}</td>
                         <td style="padding:8px 10px; color:#86868b;">${item.category}</td>
-                        <td style="padding:8px 10px; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.targetName || '-'}</td>
+                        <td style="padding:8px 10px; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.targetName || ''}</td>
                         <td style="padding:8px 10px; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.itemName}</td>
                         <td style="padding:8px 10px; text-align:right; font-weight:700; color:#0071e3;">+${parseInt(item.amount).toLocaleString()}</td>
                     </tr>
@@ -1023,7 +1038,7 @@
                 <td style="padding:10px;">${item.date.slice(5)}</td>
                 <td style="padding:10px; color:#86868b;">${item.category}</td>
                 <td style="padding:10px; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                    <span style="font-weight:700; color:#1d1d1f;">${item.targetName || '-'}</span>
+                    <span style="font-weight:700; color:#1d1d1f;">${item.targetName || ''}</span>
                     <span style="font-size:10px; color:#86868b; margin-left:6px;">(${item.itemName})</span>
                 </td>
                 <td style="padding:10px; text-align:right; font-weight:700; color:#ff3b30;">-${parseInt(item.amount).toLocaleString()}</td>
@@ -1046,7 +1061,7 @@
         
         document.getElementById('tpl-detail-period').textContent = data.period;
         document.getElementById('tpl-detail-shop-name').textContent = shop.shopName || '매장 정보 없음';
-        document.getElementById('tpl-detail-shop-tel').textContent = '연락처: ' + (shop.tel || '-');
+        document.getElementById('tpl-detail-shop-tel').textContent = '연락처: ' + (shop.tel || '');
         
         document.getElementById('tpl-detail-total-rev').textContent = '+' + data.totalRev.toLocaleString() + '원';
         document.getElementById('tpl-detail-total-buy').textContent = '-' + data.partsCost.toLocaleString() + '원';
@@ -1083,7 +1098,7 @@
                     <td style="padding:10px; color:#86868b;">${item.date.slice(5)}</td>
                     <td style="padding:10px;"><span style="color:${color}; font-weight:700;">${item.type}</span></td>
                     <td style="padding:10px; color:#1d1d1f;">${item.category}</td>
-                    <td style="padding:10px; font-weight:600;">${item.targetName || '-'}</td>
+                    <td style="padding:10px; font-weight:600;">${item.targetName || ''}</td>
                     <td style="padding:10px; max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.itemName}</td>
                     <td style="padding:10px; text-align:center; color:#86868b;">${paymentText}</td>
                     <td style="padding:10px; text-align:right; font-weight:700; color:${color};">${sign}${parseInt(item.amount).toLocaleString()}</td>

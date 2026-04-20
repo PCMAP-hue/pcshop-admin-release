@@ -196,7 +196,7 @@
                     filterFn: (item, query) => item.name.toLowerCase().includes(query) || (item.phone && item.phone.includes(query)),
                     renderFn: (item) => `
                         <div style="font-weight:700;">${item.name}</div>
-                        <div style="font-size:12px; color:var(--text-muted);">${item.phone || '-'}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${item.phone || ''}</div>
                     `,
                     onSelect: (item) => {
                         document.getElementById('trans-cust-name').value = item.name;
@@ -435,12 +435,12 @@
         // [Recipient Side]
         document.getElementById('tpl-trans-a4-cust-name-main').textContent = data.custName;
         
-        let custInfo = { address: '-', phone: '-' };
+        let custInfo = { address: '', phone: '' };
         if(window.customerDataList) {
             const found = window.customerDataList.find(c => c.name === data.custName);
             if(found) {
-                custInfo.address = found.address || '-';
-                custInfo.phone = found.phone || '-';
+                custInfo.address = found.address || '';
+                custInfo.phone = found.phone || '';
             }
         }
         document.getElementById('tpl-trans-a4-cust-addr').textContent = custInfo.address;
@@ -448,11 +448,11 @@
         document.getElementById('tpl-trans-a4-total-big').textContent = '₩ ' + data.total.toLocaleString();
 
         // [Provider Side]
-        document.getElementById('tpl-trans-a4-biz-num').textContent = shop.bizNum || '-';
-        document.getElementById('tpl-trans-a4-shop-name').textContent = shop.shopName || '-';
-        document.getElementById('tpl-trans-a4-ceo').textContent = shop.ceoName || '-';
-        document.getElementById('tpl-trans-a4-addr').textContent = shop.address || '-';
-        document.getElementById('tpl-trans-a4-tel').textContent = shop.tel || '-';
+        document.getElementById('tpl-trans-a4-biz-num').textContent = shop.bizNum || '';
+        document.getElementById('tpl-trans-a4-shop-name').textContent = shop.shopName || '';
+        document.getElementById('tpl-trans-a4-ceo').textContent = shop.ceoName || '';
+        document.getElementById('tpl-trans-a4-addr').textContent = shop.address || '';
+        document.getElementById('tpl-trans-a4-tel').textContent = shop.tel || '';
         
         const sealDiv = document.getElementById('tpl-trans-a4-seal');
         if(sealDiv) {
@@ -525,12 +525,12 @@
         const providerArea = document.getElementById('standard-provider-copy');
         const recipientArea = document.getElementById('standard-recipient-copy');
 
-        let custInfo = { address: '-', phone: '-' };
+        let custInfo = { address: '', phone: '' };
         if(window.customerDataList) {
             const found = window.customerDataList.find(c => c.name === data.custName);
             if(found) {
-                custInfo.address = found.address || '-';
-                custInfo.phone = found.phone || '-';
+                custInfo.address = found.address || '';
+                custInfo.phone = found.phone || '';
             }
         }
 
@@ -607,11 +607,11 @@
                                 <tr>
                                     <td rowspan="4" style="width:25px; background:#f2f2f2; border-right:1px solid #000; text-align:center; font-weight:700; line-height:1.4;">공<br>급<br>자</td>
                                     <td style="width:60px; background:#f2f2f2; border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; text-align:center;">등록번호</td>
-                                    <td colspan="3" style="border-bottom:1px solid #000; padding:4px; font-weight:700;">${shop.bizNum || '-'}</td>
+                                    <td colspan="3" style="border-bottom:1px solid #000; padding:4px; font-weight:700;">${shop.bizNum || ''}</td>
                                 </tr>
                                 <tr>
                                     <td style="background:#f2f2f2; border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; text-align:center;">상 호</td>
-                                    <td style="border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; font-weight:700;">${shop.shopName || '-'}</td>
+                                    <td style="border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; font-weight:700;">${shop.shopName || ''}</td>
                                     <td style="width:25px; background:#f2f2f2; border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; text-align:center;">성명</td>
                                     <td style="border-bottom:1px solid #000; position:relative; padding:4px; width:50px;">
                                         ${shop.ceoName || ''}
@@ -620,11 +620,11 @@
                                 </tr>
                                 <tr>
                                     <td style="background:#f2f2f2; border-bottom:1px solid #000; border-right:1px solid #000; padding:4px; text-align:center;">주 소</td>
-                                    <td colspan="3" style="border-bottom:1px solid #000; padding:4px; font-size:9px; vertical-align:top; height:24px;">${shop.address || '-'}</td>
+                                    <td colspan="3" style="border-bottom:1px solid #000; padding:4px; font-size:9px; vertical-align:top; height:24px;">${shop.address || ''}</td>
                                 </tr>
                                 <tr>
                                     <td style="background:#f2f2f2; border-right:1px solid #000; padding:4px; text-align:center;">전 화</td>
-                                    <td style="border-right:1px solid #000; padding:4px;">${shop.tel || '-'}</td>
+                                    <td style="border-right:1px solid #000; padding:4px;">${shop.tel || ''}</td>
                                     <td style="width:25px; background:#f2f2f2; border-right:1px solid #000; padding:4px; text-align:center;">팩스</td>
                                     <td style="padding:4px;">-</td>
                                 </tr>

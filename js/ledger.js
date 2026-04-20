@@ -43,7 +43,7 @@
                 { name: '구분', class: 'col-xs', align: 'center' },
                 { name: '분류', class: 'col-s' },
                 { name: '품목명 및 대상', class: 'col-flex' },
-                { name: '금액', class: 'col-m', align: 'right' },
+                { name: '금액', class: 'col-m', align: 'center' },
                 { name: '결제수단', class: 'col-s', align: 'center' },
                 { name: '관리', class: 'col-action', align: 'center' }
             ], 'ledger-list');
@@ -66,7 +66,7 @@
                             <span class="v-bold">${item.itemName}</span>
                             ${item.targetName ? `<span class="c-muted" style="font-size:12px; margin-left:8px;">[${item.targetName}]</span>` : ''}
                         </div>
-                        <div class="col-m t-right v-bold" style="color:${amountColor};">${isRevenue ? '+' : '-'}${parseInt(item.amount).toLocaleString()}원</div>
+                        <div class="col-m t-center v-bold" style="color:${amountColor};">${isRevenue ? '+' : '-'}${parseInt(item.amount).toLocaleString()}원</div>
                         <div class="col-s t-center c-muted" style="font-size:12px;">${item.paymentMethod === 'cash' ? '현금' : (item.paymentMethod === 'card' ? '카드' : '이체')}</div>
                         <div class="col-action t-center">
                             <button class="btn-delete" onclick="handleDeleteLedger('${item.id}', event)" title="삭제">
@@ -214,8 +214,8 @@
             }
         };
 
-        // Helper to reset modal (신규 등록용)
-        const resetLedgerModal = (type = '매출') => {
+        // Helper to reset modal (신규 등록용) - 타 모듈 연동을 위해 window 객체에 등록
+        window.resetLedgerModal = (type = '매출') => {
             const isRevenue = (type === '매출');
             
             document.getElementById('modal-ledger-title').textContent = isRevenue ? '신규 매출 내역 등록' : '신규 매입 내역 등록';

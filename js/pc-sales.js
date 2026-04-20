@@ -58,25 +58,25 @@
             { name: '진행상태', class: 'col-s', align: 'center' }, 
             { name: '결제방식', class: 'col-s', align: 'center' },
             { name: '증빙요청', class: 'col-s', align: 'center' },
-            { name: '총 금액', class: 'col-m', align: 'right' }, { name: '관리', class: 'col-action', align: 'center' }
+            { name: '총 금액', class: 'col-m', align: 'center' }, { name: '관리', class: 'col-action', align: 'center' }
         ], 'pc-sales-list');
 
         let html = header;
         filtered.forEach(s => {
             const statusColor = s.status === '판매완료' ? 'var(--success-color)' : 'var(--accent)';
-            const saleDateDisp = s.saleDate ? s.saleDate.split('-').map(part => part.slice(-2)).join('.') : '-';
-            const compDateDisp = s.completionDate ? s.completionDate.split('-').map(part => part.slice(-2)).join('.') : '-';
+            const saleDateDisp = s.saleDate ? s.saleDate.split('-').map(part => part.slice(-2)).join('.') : '';
+            const compDateDisp = s.completionDate ? s.completionDate.split('-').map(part => part.slice(-2)).join('.') : '';
             html += `
                 <div class="list-row" onclick="handleEditPcSale('${s.id}')">
                     <div class="col-s v-bold c-accent">${s.id}</div>
                     <div class="col-s c-muted" style="font-size:13px;">${saleDateDisp}</div>
                     <div class="col-s c-muted" style="font-size:13px;">${compDateDisp}</div>
                     <div class="col-m v-bold">${s.custName}</div>
-                    <div class="col-flex c-muted" title="${s.quoteInfo || '-'}">${s.quoteInfo || '-'}</div>
+                    <div class="col-flex c-muted" title="${s.quoteInfo || ''}">${s.quoteInfo || ''}</div>
                     <div class="col-s t-center"><span class="status-badge" style="background:${statusColor}15; color:${statusColor}; border:1px solid ${statusColor}30; padding:4px 10px;">${s.status}</span></div>
-                    <div class="col-s t-center" style="font-size:13px; color:var(--text-color);">${s.paymentMethod || '-'}</div>
-                    <div class="col-s t-center" style="font-size:13px; color:var(--text-color);">${s.taxRequest || '-'}</div>
-                    <div class="col-m t-right v-bold">${parseInt(s.totalAmount || 0).toLocaleString()}원</div>
+                    <div class="col-s t-center" style="font-size:13px; color:var(--text-color);">${s.paymentMethod || ''}</div>
+                    <div class="col-s t-center" style="font-size:13px; color:var(--text-color);">${s.taxRequest || ''}</div>
+                    <div class="col-m t-center v-bold">${parseInt(s.totalAmount || 0).toLocaleString()}원</div>
                     <div class="col-action t-center"><button class="btn-delete" onclick="handleDeletePcSale('${s.id}', event)" title="삭제"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button></div>
                 </div>
             `;
@@ -121,15 +121,15 @@
             let dashHTML = headerHTML;
             todayItems.forEach(item => {
                 const statusColor = item.status === '판매완료' ? 'var(--success-color)' : 'var(--accent)';
-                const saleDateDisp = item.saleDate ? item.saleDate.split('-').map(part => part.slice(-2)).join('.') : '-';
-                const compDateDisp = item.completionDate ? item.completionDate.split('-').map(part => part.slice(-2)).join('.') : '-';
+                const saleDateDisp = item.saleDate ? item.saleDate.split('-').map(part => part.slice(-2)).join('.') : '';
+                const compDateDisp = item.completionDate ? item.completionDate.split('-').map(part => part.slice(-2)).join('.') : '';
                 dashHTML += `
                     <div class="list-row" onclick="handleEditPcSale('${item.id}')" style="padding:12px 24px;">
                         <div class="col-s v-bold c-accent">${item.id}</div>
                         <div class="col-s c-muted" style="font-size:12px;">${saleDateDisp}</div>
                         <div class="col-s c-muted" style="font-size:12px;">${compDateDisp}</div>
                         <div class="col-m v-bold">${item.custName}</div>
-                        <div class="col-flex c-muted" style="font-size:13px;" title="${item.quoteInfo || '-'}">${item.quoteInfo || '-'}</div>
+                        <div class="col-flex c-muted" style="font-size:13px;" title="${item.quoteInfo || ''}">${item.quoteInfo || ''}</div>
                         <div class="col-s t-center"><span class="status-badge" style="background:${statusColor}15; color:${statusColor}; border:1px solid ${statusColor}30; padding:4px 10px; font-size:11px;">${item.status}</span></div>
                         <div class="col-action t-center"><button class="btn-delete" onclick="handleDeletePcSale('${item.id}', event)" title="삭제"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button></div>
                     </div>

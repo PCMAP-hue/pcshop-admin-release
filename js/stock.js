@@ -41,8 +41,8 @@
             { name: '카테고리', class: 'col-s' },
             { name: '부품명 및 상세 사양', class: 'col-flex' },
             { name: '상태', class: 'col-s' },
-            { name: '현재고', class: 'col-s', align: 'right' },
-            { name: '단가', class: 'col-m', align: 'right' },
+            { name: '현재고', class: 'col-s', align: 'center' },
+            { name: '단가', class: 'col-m', align: 'center' },
             { name: '재고관리', class: 'col-action', align: 'center' }
         ], 'stock-list');
 
@@ -62,7 +62,7 @@
                     <div class="col-s"><span class="status-badge ${item.condition === 'used' ? 'status-pending' : 'status-completed'}" style="font-size:11px;">${item.condition === 'used' ? '중고' : '신품'}</span></div>
                     
                     <!-- Qty Area: Click to see Outbound History -->
-                    <div class="col-s t-right v-bold ${isLow ? 'c-danger' : ''}" onclick="handleStockHistory('${item.id}', 'history-out', event)" title="재고 수량 (클릭 시 출고 내역)">
+                    <div class="col-s t-center v-bold ${isLow ? 'c-danger' : ''}" onclick="handleStockHistory('${item.id}', 'history-out', event)" title="재고 수량 (클릭 시 출고 내역)">
                         <div class="cell-hover-effect">
                             ${item.qty}개
                             ${isLow ? '<div class="status-badge" style="background:var(--danger-color); color:white; font-size:10px; padding:2px 4px; margin-top:2px; border:none;">재고부족</div>' : ''}
@@ -70,9 +70,9 @@
                     </div>
 
                     <!-- Price Area: Click to see Inbound History -->
-                    <div class="col-m t-right" onclick="handleStockHistory('${item.id}', 'history-in', event)" title="판매 단가 (클릭 시 입고 내역)">
+                    <div class="col-m t-center" onclick="handleStockHistory('${item.id}', 'history-in', event)" title="판매 단가 (클릭 시 입고 내역)">
                         <div class="cell-hover-effect">
-                            <div class="v-bold c-accent" style="display:flex; flex-direction:column; align-items:flex-end;">
+                            <div class="v-bold c-accent" style="display:flex; flex-direction:column; align-items:center;">
                                 <span style="font-size:10px; font-weight:normal; opacity:0.8; margin-bottom:2px;">판매가</span>
                                 ${item.price > 0 ? (item.price).toLocaleString() + '원' : '<span style="font-size:12px; color:var(--text-muted); font-weight:normal;">미설정</span>'}
                             </div>
@@ -209,7 +209,7 @@
                 const isOut = h.type === 'out';
                 const typeText = isOut ? '출고' : '입고';
                 const typeColor = isOut ? 'var(--danger-color)' : 'var(--success-color)';
-                const reasonText = isOut ? (h.reason || '-') : (h.vendorName || '입고 기록');
+                const reasonText = isOut ? (h.reason || '') : (h.vendorName || '입고 기록');
                 const qtyPrefix = isOut ? '-' : '+';
                 const qtyColor = isOut ? 'var(--danger-color)' : 'var(--accent)';
 
@@ -219,7 +219,7 @@
                         <td style="padding:10px 12px; text-align:center;"><span style="font-size:10px; padding:2px 6px; border-radius:4px; background:${typeColor}15; color:${typeColor}; font-weight:600;">${typeText}</span></td>
                         <td style="padding:10px 12px; font-size:12px;">${reasonText}</td>
                         <td style="padding:10px 12px; text-align:right; font-weight:700; color:${qtyColor}; white-space:nowrap;">${qtyPrefix}${h.qty}개</td>
-                        <td style="padding:10px 12px; text-align:right; font-weight:600; color:var(--text-color); white-space:nowrap;">${h.balance || '-'}개</td>
+                        <td style="padding:10px 12px; text-align:right; font-weight:600; color:var(--text-color); white-space:nowrap;">${h.balance || ''}개</td>
                     </tr>
                 `;
             }).join('');
@@ -241,10 +241,10 @@
                 return `
                 <tr>
                     <td style="padding:10px 16px;">${formatHistoryDate(h.date)}</td>
-                    <td style="padding:10px 16px;">${h.vendorName || '-'}</td>
+                    <td style="padding:10px 16px;">${h.vendorName || ''}</td>
                     <td style="padding:10px 16px; text-align:right; white-space:nowrap;">${(h.price || 0).toLocaleString()}원</td>
                     <td style="padding:10px 16px; text-align:right; font-weight:700; color:var(--accent); white-space:nowrap;">${h.qty}개</td>
-                    <td style="padding:10px 16px; text-align:right; opacity:0.8; white-space:nowrap;">${h.balance || '-'}개</td>
+                    <td style="padding:10px 16px; text-align:right; opacity:0.8; white-space:nowrap;">${h.balance || ''}개</td>
                 </tr>
             `}).join('');
         }
@@ -265,9 +265,9 @@
                 return `
                 <tr>
                     <td style="padding:10px 12px;">${formatHistoryDate(h.date)}</td>
-                    <td style="padding:10px 12px; font-size:12px; color:var(--text-muted);">${h.reason || '-'}</td>
+                    <td style="padding:10px 12px; font-size:12px; color:var(--text-muted);">${h.reason || ''}</td>
                     <td style="padding:10px 12px; text-align:center; font-weight:700; color:var(--danger-color); white-space:nowrap;">${h.qty}개</td>
-                    <td style="padding:10px 12px; text-align:right; font-weight:600; color:var(--text-color); white-space:nowrap;">${h.balance || '-'}개</td>
+                    <td style="padding:10px 12px; text-align:right; font-weight:600; color:var(--text-color); white-space:nowrap;">${h.balance || ''}개</td>
                 </tr>
             `}).join('');
         }
@@ -426,7 +426,7 @@
                     filterFn: (v, q) => v.name.toLowerCase().includes(q) || (v.phone && v.phone.includes(q)),
                     renderFn: (v) => `
                         <div style="font-weight:700; font-size:14px; color:var(--text-color);">${v.name}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${v.phone || '-'} | ${v.owner || '-'}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${v.phone || ''} | ${v.owner || ''}</div>
                     `,
                     onSelect: (vendor) => {
                         document.getElementById('stock-vendor-name').value = vendor.name;
@@ -446,7 +446,7 @@
                     filterFn: (v, q) => v.name.toLowerCase().includes(q) || (v.phone && v.phone.includes(q)),
                     renderFn: (v) => `
                         <div style="font-weight:700; font-size:14px; color:var(--text-color);">${v.name}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${v.phone || '-'} | ${v.owner || '-'}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${v.phone || ''} | ${v.owner || ''}</div>
                     `,
                     onSelect: (vendor) => {
                         document.getElementById('adjust-vendor-name').value = vendor.name;

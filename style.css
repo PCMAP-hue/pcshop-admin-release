@@ -554,29 +554,37 @@ textarea.auth-input {
 }
 .list-header > div {
     position: relative; /* resizer 배치를 위함 */
-    padding: 12px 10px; /* 내부 간격을 일정하게 부여하여 일관성 확보 */
-    display: flex;
-    align-items: center;
+    padding: 12px 10px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* 헤더 텍스트 센터 정렬 강제 */
+    text-align: center !important;
     overflow: visible !important;
-}
-.list-header > div:first-child {
-    padding-left: 0; /* 첫 번째 열 왼쪽 여백 제거 */
 }
 .resizer {
     position: absolute;
-    top: 0; /* 전체 높이 차지 */
+    top: 0;
     bottom: 0;
-    right: 0;
-    width: 2px; /* 항상 보이는 확실한 두께 */
+    right: -5px; /* 경계선 중앙에 위치하도록 조정 */
+    width: 10px; /* 실제 마우스 클릭을 받는 영역 (Hit Area)은 넓게 */
     cursor: col-resize;
     z-index: 100;
-    background-color: var(--border-color); /* 상시 노출 구분선 */
+    background: transparent; /* 배경은 투명하게 */
     transition: all 0.2s;
 }
-.resizer:hover, .resizer.dragging {
-    width: 4px;
+.resizer::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px; /* 시각적으로 보이는 선은 1px로 가늘게 */
+    background-color: var(--border-color);
+    transition: all 0.2s;
+}
+.resizer:hover::after, .resizer.dragging::after {
+    width: 3px; /* 호버 시에만 시각적으로 강조 */
     background-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
 }
 
 
@@ -592,16 +600,35 @@ body.resizing * {
 
 .list-row {
     display: flex;
-    padding: 16px 24px; /* 패딩 압축 */
+    padding: 0 24px; /* 가로 패딩만 유지하고 세로는 자식 요소에서 처리 */
     border-bottom: 1px solid var(--border-color);
     font-size: 14.5px;
-    align-items: center;
+    align-items: stretch; /* 자식 요소들이 높이를 꽉 채워 구분선이 이어지게 함 */
     transition: background-color 0.2s ease;
 }
 .list-row:hover {
     background-color: var(--input-bg);
     cursor: pointer;
 }
+.list-row > div {
+    padding: 16px 10px;
+    border-right: 1px solid var(--border-color);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* 데이터 가운데 정렬 강제 */
+    text-align: center !important;
+    overflow: hidden;
+}
+.list-row > div:last-child {
+    border-right: none;
+}
+/* 통계 내역 리스트 전용 스타일: 세로 구분선 제거 및 폭 조절 */
+#stat-detail-list .list-header > div,
+#stat-detail-list .list-row > div {
+    border-right: none !important;
+    padding: 8px 10px !important; /* 세로 폭 축소 */
+}
+#stat-detail-list .list-row:last-child { border-bottom: none; }
 .list-row:last-child { border-bottom: none; }
 /* Standardized Column Sizes */
 .col-xs { width: 80px; flex-shrink: 0; }
@@ -611,11 +638,12 @@ body.resizing * {
 .col-xl { width: 220px; flex-shrink: 0; }
 .col-flex { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .col-flex-2 { flex: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.col-action { width: 100px; flex-shrink: 0; text-align: right; }
+.col-action { width: 140px; flex-shrink: 0; text-align: center; }
 
-/* Alignment Utilities */
-.t-center { text-align: center; }
-.t-right  { text-align: right; }
+/* Alignment Utilities (Flexbox 대응) */
+.t-center { justify-content: center !important; text-align: center !important; }
+.t-left   { justify-content: flex-start !important; text-align: left !important; }
+.t-right  { justify-content: flex-end !important; text-align: right !important; }
 .v-bold   { font-weight: 700; letter-spacing: -0.5px; }
 .c-accent { color: var(--accent); }
 .c-muted  { color: var(--text-muted); font-size: 13px; }

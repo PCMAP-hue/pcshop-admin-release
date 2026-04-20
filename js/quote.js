@@ -136,7 +136,7 @@
                     filterFn: (c, q) => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q)),
                     renderFn: (c) => `
                         <div style="font-weight:700; font-size:14px; color:var(--text-color);">${c.name}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${c.phone || '-'}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${c.phone || ''}</div>
                     `,
                     onSelect: (cust) => {
                         document.getElementById('quote-cust-name').value = cust.name;
@@ -313,13 +313,13 @@
 
         // Shop Settings Mapping
         const shop = window.shopSettings || {};
-        if(tpl.shopName) tpl.shopName.textContent = shop.shopName || '-';
-        if(tpl.shopBiz) tpl.shopBiz.textContent = shop.bizNum || '-';
-        if(tpl.shopCeo) tpl.shopCeo.textContent = shop.ceoName || '-';
-        if(tpl.shopAddr) tpl.shopAddr.textContent = shop.address || '-';
-        if(tpl.shopTel) tpl.shopTel.textContent = shop.tel || '-';
-        if(tpl.shopType) tpl.shopType.textContent = shop.bizType || '-';
-        if(tpl.shopItem) tpl.shopItem.textContent = shop.bizItem || '-';
+        if(tpl.shopName) tpl.shopName.textContent = shop.shopName || '';
+        if(tpl.shopBiz) tpl.shopBiz.textContent = shop.bizNum || '';
+        if(tpl.shopCeo) tpl.shopCeo.textContent = shop.ceoName || '';
+        if(tpl.shopAddr) tpl.shopAddr.textContent = shop.address || '';
+        if(tpl.shopTel) tpl.shopTel.textContent = shop.tel || '';
+        if(tpl.shopType) tpl.shopType.textContent = shop.bizType || '';
+        if(tpl.shopItem) tpl.shopItem.textContent = shop.bizItem || '';
         
         if(tpl.shopSeal) {
             tpl.shopSeal.innerHTML = shop.seal ? `<img src="${shop.seal}" style="width:100%; height:100%; object-fit:contain; opacity:0.8;">` : '';

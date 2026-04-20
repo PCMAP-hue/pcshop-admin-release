@@ -30,8 +30,8 @@
             { name: '완료날짜', class: 'col-s' },
             { name: '고객명', class: 'col-m' },
             { name: '접수 내용 및 증상', class: 'col-flex' },
-            { name: '상태', class: 'col-m', align: 'center', style: 'padding-right: 40px;' },
-            { name: '관리', class: 'col-action', align: 'right' }
+            { name: '상태', class: 'col-m', align: 'center' },
+            { name: '관리', class: 'col-action', align: 'center' }
         ], 'as-list-dash');
 
         const headerHTML_mng = renderListHeader([
@@ -40,8 +40,8 @@
             { name: '완료날짜', class: 'col-s' },
             { name: '고객명', class: 'col-m' },
             { name: '접수 내용 및 증상', class: 'col-flex' },
-            { name: '상태', class: 'col-m', align: 'center', style: 'padding-right: 40px;' },
-            { name: '관리', class: 'col-action', align: 'right' }
+            { name: '상태', class: 'col-m', align: 'center' },
+            { name: '관리', class: 'col-action', align: 'center' }
         ], 'as-list-mng');
 
         if(dashboardList) {
@@ -67,16 +67,16 @@
                 let dashHTML = headerHTML_dash;
                 todayItems.forEach(item => {
                     const conf = getStatusConfig(item.status);
-                    const compDate = item.completionDate ? item.completionDate.split('-').map(s => s.slice(-2)).join('.') : '-';
+                    const compDate = item.completionDate ? item.completionDate.split('-').map(s => s.slice(-2)).join('.') : '';
                     dashHTML += `
-                        <div class="list-row" onclick="handleEditAs('${item.id}')" style="padding:12px 24px;">
+                        <div class="list-row" onclick="handleEditAs('${item.id}')">
                             <div class="col-s v-bold c-accent">${item.id}</div>
                             <div class="col-s c-muted" style="font-size:12px;">${item.date}</div>
                             <div class="col-s c-muted" style="font-size:12px;">${compDate}</div>
                             <div class="col-m v-bold">${item.name} <span class="c-muted" style="font-weight:400; font-size:11px;">(${item.type})</span></div>
                             <div class="col-flex c-muted" style="font-size:13px;" title="${item.issues}">${item.issues}</div>
-                            <div class="col-m t-center" style="padding-right:40px;"><span class="status-badge ${conf.cl}" style="font-size:11px; padding:4px 10px;">${conf.text}</span></div>
-                            <div class="col-action t-right"><button class="btn-delete" onclick="handleDeleteAs('${item.id}', event)" title="삭제"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button></div>
+                            <div class="col-m t-center"><span class="status-badge ${conf.cl}" style="font-size:11px; padding:4px 10px;">${conf.text}</span></div>
+                            <div class="col-action t-center"><button class="btn-delete" onclick="handleDeleteAs('${item.id}', event)" title="삭제"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button></div>
                         </div>
                     `;
                 });
@@ -94,7 +94,7 @@
             } else {
                 filtered.forEach(item => {
                     const conf = getStatusConfig(item.status);
-                    const compDate = item.completionDate ? item.completionDate.split('-').map(s => s.slice(-2)).join('.') : '-';
+                    const compDate = item.completionDate ? item.completionDate.split('-').map(s => s.slice(-2)).join('.') : '';
                     mngHTML += `
                         <div class="list-row" onclick="handleEditAs('${item.id}')">
                             <div class="col-s v-bold c-accent">${item.id}</div>
@@ -102,9 +102,9 @@
                             <div class="col-s c-muted" style="font-size:13px;">${compDate}</div>
                             <div class="col-m v-bold">${item.name} <span class="c-muted" style="font-weight:400; font-size:12px;">(${item.type})</span></div>
                             <div class="col-flex c-muted" title="${item.issues}">${item.issues}</div>
-                            <div class="col-m t-center" style="padding-right:40px;"><span class="status-badge ${conf.cl}">${conf.text}</span></div>
-                            <div class="col-action" style="display:flex; align-items:center; justify-content:flex-end;">
-                                <select class="apple-select" onclick="event.stopPropagation()" onchange="handleChangeStatus('${item.id}', this)" style="margin-right:8px;">
+                            <div class="col-m t-center"><span class="status-badge ${conf.cl}">${conf.text}</span></div>
+                            <div class="col-action" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                                <select class="apple-select" onclick="event.stopPropagation()" onchange="handleChangeStatus('${item.id}', this)" style="padding-right:24px; min-width:90px;">
                                     <option value="대기중" ${item.status==='대기중'?'selected':''}>대기중</option>
                                     <option value="수리중" ${item.status==='수리중'?'selected':''}>수리중</option>
                                     <option value="결제대기" ${item.status==='결제대기'?'selected':''}>결제대기</option>

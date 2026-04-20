@@ -20,6 +20,30 @@
         }
     };
 
+    window.handleLinkExpense = (id, e) => {
+        if (e) e.stopPropagation();
+        const item = window.vendorDataList.find(x => x.id === id);
+        if(!item) return;
+        
+        // 1. 매출 및 매입 등록 탭으로 이동
+        const tabLedger = document.getElementById('tab-ledger');
+        if(tabLedger) {
+            tabLedger.click();
+            
+            // 2. 탭 전환 후 매입 등록 모달 오픈 (약간의 지연 필요)
+            setTimeout(() => {
+                if(window.resetLedgerModal) {
+                    window.resetLedgerModal('매입');
+                    // 3. 매입처명(품목명 및 대상) 자동 입력
+                    const targetInput = document.getElementById('ledger-target-name');
+                    if(targetInput) {
+                        targetInput.value = item.name;
+                    }
+                }
+            }, 150);
+        }
+    };
+
     window.handleEditVendor = (id) => {
         const item = window.vendorDataList.find(x => x.id === id);
         if(item) {
@@ -70,11 +94,11 @@
             container.style.display = 'block';
 
             const header = renderListHeader([
-                { name: '상호명', class: 'col-m' },
-                { name: '대표자', class: 'col-s' },
-                { name: '연락처/FAX', class: 'col-m' },
-                { name: '업태/종목', class: 'col-m' },
-                { name: '비고 및 정보', class: 'col-flex' },
+                { name: '상호명', class: 'col-m', align: 'center' },
+                { name: '대표자', class: 'col-s', align: 'center' },
+                { name: '연락처/FAX', class: 'col-m', align: 'center' },
+                { name: '업태/종목', class: 'col-m', align: 'center' },
+                { name: '비고 및 정보', class: 'col-flex', align: 'center' },
                 { name: '관리', class: 'col-action', align: 'center' }
             ], 'vendor-list');
 
@@ -82,17 +106,20 @@
             filtered.forEach(item => {
                 html += `
                     <div class="list-row" onclick="handleEditVendor('${item.id}')">
-                        <div class="col-m v-bold">${item.name}</div>
-                        <div class="col-s">${item.owner || '-'}</div>
-                        <div class="col-m">
-                            <div class="v-bold">${item.phone || '-'}</div>
+                        <div class="col-m v-bold t-center">${item.name}</div>
+                        <div class="col-s t-center">${item.owner || ''}</div>
+                        <div class="col-m t-center">
+                            <div class="v-bold">${item.phone || ''}</div>
                             ${item.fax ? `<div class="c-muted" style="font-size:11px; margin-top:2px;">FAX: ${item.fax}</div>` : ''}
                         </div>
-                        <div class="col-m c-muted" style="font-size:13px;">${item.category || '-'} / ${item.type || '-'}</div>
-                        <div class="col-flex c-muted" title="${item.memo || '-'}">${item.memo || '-'}</div>
-                        <div class="col-action t-center">
+                        <div class="col-m c-muted t-center" style="font-size:13px;">${item.category || ''} / ${item.type || ''}</div>
+                        <div class="col-flex c-muted t-center" title="${item.memo || ''}">${item.memo || ''}</div>
+                        <div class="col-action t-center" style="display:flex; justify-content:center; gap:8px;">
+                            <button class="btn-edit" onclick="handleLinkExpense('${item.id}', event)" title="이 매입처로 매입 등록" style="background:rgba(255,59,48,0.1); color:var(--danger-color); border:none; padding:4px; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                <i data-lucide="trending-down" style="width:14px;height:14px;"></i>
+                            </button>
                             <button class="btn-delete" onclick="handleDeleteVendor('${item.id}', event)" title="삭제">
-                                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
                             </button>
                         </div>
                     </div>

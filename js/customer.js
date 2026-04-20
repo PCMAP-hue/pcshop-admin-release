@@ -22,6 +22,30 @@
         }
     };
 
+    window.handleLinkRevenue = (id, e) => {
+        if (e) e.stopPropagation();
+        const item = window.customerDataList.find(x => x.id === id);
+        if(!item) return;
+        
+        // 1. 매출 및 매입 등록 탭으로 이동
+        const tabLedger = document.getElementById('tab-ledger');
+        if(tabLedger) {
+            tabLedger.click();
+            
+            // 2. 탭 전환 후 매출 등록 모달 오픈 (약간의 지연 필요)
+            setTimeout(() => {
+                if(window.resetLedgerModal) {
+                    window.resetLedgerModal('매출');
+                    // 3. 고객명 자동 입력
+                    const targetInput = document.getElementById('ledger-target-name');
+                    if(targetInput) {
+                        targetInput.value = item.name;
+                    }
+                }
+            }, 150);
+        }
+    };
+
     window.handleEditCustomer = (id) => {
         const item = window.customerDataList.find(x => x.id === id);
         if(item) {
@@ -78,13 +102,13 @@
             container.style.display = 'block';
             
             const header = renderListHeader([
-                { name: '고객번호', class: 'col-s' },
-                { name: '등록 날짜', class: 'col-s' },
-                { name: '고객명', style: 'flex: 1;' },
-                { name: '연락처', style: 'flex: 1;' },
+                { name: '고객번호', class: 'col-s', align: 'center' },
+                { name: '등록 날짜', class: 'col-s', align: 'center' },
+                { name: '고객명', style: 'flex: 1;', align: 'center' },
+                { name: '연락처', style: 'flex: 1;', align: 'center' },
                 { name: '유입 경로', class: 'col-s', align: 'center' },
-                { name: '고객 분류', class: 'col-s' },
-                { name: '메모 및 특이사항', style: 'flex: 2;' },
+                { name: '고객 분류', class: 'col-s', align: 'center' },
+                { name: '메모 및 특이사항', style: 'flex: 2;', align: 'center' },
                 { name: '관리', class: 'col-action', align: 'center' }
             ], 'customer-list');
 
@@ -100,16 +124,21 @@
 
                 html += `
                     <div class="list-row" onclick="handleEditCustomer('${item.id}')">
-                        <div class="col-s v-bold c-accent">${item.id}</div>
-                        <div class="col-s c-muted" style="font-size:12px;">${item.regDate || '-'}</div>
-                        <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="v-bold">${item.name}</div>
-                        <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.phone}</div>
-                        <div class="col-s t-center"><span class="status-badge" style="${routeStyle} border:1px solid transparent; font-size:12px; padding:4px 10px;">${route}</span></div>
-                        <div class="col-s"><span class="status-badge" style="background:rgba(0,113,227,0.05); color:var(--accent); border:none; font-size:12px; padding:4px 10px;">${item.types}</span></div>
-                        <div style="flex: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="c-muted" title="${item.memo || '-'}">${item.memo || '-'}</div>
-                        <div class="col-action t-center">
+                        <div class="col-s v-bold c-accent t-center">${item.id}</div>
+                        <div class="col-s c-muted t-center" style="font-size:12px;">${item.regDate || ''}</div>
+                        <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="v-bold t-center">${item.name}</div>
+                        <div style="flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="t-center">${item.phone}</div>
+                        <div class="col-s t-center">
+                            <span class="status-badge" style="${routeStyle} border:1px solid transparent; font-size:12px; padding:4px 10px;">${route}</span>
+                        </div>
+                        <div class="col-s t-center"><span class="status-badge" style="background:rgba(0,113,227,0.05); color:var(--accent); border:none; font-size:12px; padding:4px 10px;">${item.types}</span></div>
+                        <div style="flex: 2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="c-muted t-center" title="${item.memo || ''}">${item.memo || ''}</div>
+                        <div class="col-action t-center" style="display:flex; justify-content:center; gap:8px;">
+                            <button class="btn-edit" onclick="handleLinkRevenue('${item.id}', event)" title="이 고객으로 매출 등록" style="background:rgba(0,113,227,0.1); color:var(--accent); border:none; padding:4px; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
+                            </button>
                             <button class="btn-delete" onclick="handleDeleteCustomer('${item.id}', event)" title="삭제">
-                                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
                             </button>
                         </div>
                     </div>
