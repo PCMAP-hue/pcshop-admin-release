@@ -1193,16 +1193,18 @@ body.print-as-report #as-report-template {
    Premium Update Modal Styles
    ============================================================ */
 .update-card {
-    background: var(--bg-card, rgba(255, 255, 255, 0.95));
+    background: var(--card-bg, #ffffff);
     backdrop-filter: blur(20px);
     width: 440px;
     border-radius: 24px;
     padding: 32px;
-    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
+    border: 1px solid var(--border-color);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    animation: modalIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dark-theme .update-card {
-    background: rgba(30, 30, 32, 0.9);
+[data-theme="dark"] .update-card {
+    background: var(--card-bg, #2b2b2d);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -1234,7 +1236,7 @@ body.print-as-report #as-report-template {
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
-    color: var(--text-primary);
+    color: var(--text-color);
 }
 
 .ver-badge {
@@ -1251,11 +1253,12 @@ body.print-as-report #as-report-template {
 .note-section h4 {
     font-size: 0.95rem;
     margin-bottom: 12px;
-    color: var(--text-secondary);
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 .update-notes-box {
-    background: var(--bg-body, #f5f5f7);
+    background: var(--sidebar-bg);
     padding: 16px;
     border-radius: 14px;
     max-height: 120px;
@@ -1263,10 +1266,12 @@ body.print-as-report #as-report-template {
     font-size: 0.9rem;
     line-height: 1.6;
     margin-bottom: 20px;
+    color: var(--text-color);
 }
 
-.dark-theme .update-notes-box {
-    background: rgba(0, 0, 0, 0.2);
+[data-theme="dark"] .update-notes-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .update-warnings-card {
@@ -1296,7 +1301,7 @@ body.print-as-report #as-report-template {
 
 .progress-bar-container {
     height: 8px;
-    background: var(--bg-body, #eee);
+    background: var(--sidebar-bg);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -1338,11 +1343,21 @@ body.print-as-report #as-report-template {
 .glass-btn {
     flex: 1;
     background: transparent;
-    border: 1px solid var(--border-color, #ddd);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     cursor: pointer;
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.glass-btn:hover {
+    background: var(--sidebar-bg);
+}
+
+[data-theme="dark"] .glass-btn {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
 }
 
 .pulse-text { animation: pulse 2s infinite; }
