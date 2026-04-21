@@ -48,24 +48,18 @@
             const now = new Date();
             const ty = now.getFullYear(); const tm = now.getMonth() + 1; const td = now.getDate();
             
-            const todayItems = window.asDataList.filter(item => {
-                const parts = item.date.match(/\d+/g);
-                if(!parts || parts.length < 3) return false;
-                let dy = parseInt(parts[0]); let dm = parseInt(parts[1]); let dd = parseInt(parts[2]);
-                if(dy < 100) dy += 2000;
-                return ty === dy && tm === dm && td === dd;
-            }).slice(0, 5);
+            const pendingItems = window.asDataList.filter(item => item.status !== '완료');
 
-            if(todayItems.length === 0) {
+            if(pendingItems.length === 0) {
                 dashboardList.innerHTML = `
                     <div style="padding:40px; text-align:center; color:var(--text-muted);">
-                        <i data-lucide="info" style="width:32px;height:32px;opacity:0.3;margin-bottom:12px;"></i>
-                        <div style="font-size:14px; font-weight:500;">오늘 접수된 AS 내역이 없습니다.</div>
+                        <i data-lucide="check-circle" style="width:32px;height:32px;color:var(--success-color);opacity:0.6;margin-bottom:12px;"></i>
+                        <div style="font-size:14px; font-weight:500;">현재 진행 중인 AS 내역이 없습니다.</div>
                     </div>
                 `;
             } else {
                 let dashHTML = headerHTML_dash;
-                todayItems.forEach(item => {
+                pendingItems.slice(0, 10).forEach(item => {
                     const conf = getStatusConfig(item.status);
                     const compDate = item.completionDate ? item.completionDate.split('-').map(s => s.slice(-2)).join('.') : '';
                     dashHTML += `

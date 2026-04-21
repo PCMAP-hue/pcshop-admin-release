@@ -629,6 +629,20 @@ body.resizing * {
     padding: 8px 10px !important; /* 세로 폭 축소 */
 }
 #stat-detail-list .list-row:last-child { border-bottom: none; }
+
+/* Dashboard List Slimming: Reduce vertical height for dashboard lists only */
+#dashboard-as-list .list-row > div,
+#dashboard-pc-sales-list .list-row > div {
+    padding: 10px 10px !important;
+    font-size: 13px !important;
+}
+
+#dashboard-as-list .list-header > div,
+#dashboard-pc-sales-list .list-header > div {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+}
+
 .list-row:last-child { border-bottom: none; }
 /* Standardized Column Sizes */
 .col-xs { width: 80px; flex-shrink: 0; }

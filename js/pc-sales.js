@@ -104,27 +104,23 @@
         const now = new Date();
         const ty = now.getFullYear(); const tm = now.getMonth() + 1; const td = now.getDate();
         
-        const todayItems = window.pcSalesDataList.filter(item => {
-             if(!item.saleDate) return false;
-             const [y, m, d] = item.saleDate.split('-').map(Number);
-             return ty === y && tm === m && td === d;
-        }).slice(0, 5);
+        const pendingItems = window.pcSalesDataList.filter(item => item.status !== '판매완료');
 
-        if(todayItems.length === 0) {
+        if(pendingItems.length === 0) {
             dashboardList.innerHTML = `
                 <div style="padding:40px; text-align:center; color:var(--text-muted);">
-                    <i data-lucide="info" style="width:32px;height:32px;opacity:0.3;margin-bottom:12px;"></i>
-                    <div style="font-size:14px; font-weight:500;">오늘 등록된 PC 판매 내역이 없습니다.</div>
+                    <i data-lucide="check-circle" style="width:32px;height:32px;color:var(--success-color);opacity:0.6;margin-bottom:12px;"></i>
+                    <div style="font-size:14px; font-weight:500;">현재 진행 중인 PC 판매 내역이 없습니다.</div>
                 </div>
             `;
         } else {
             let dashHTML = headerHTML;
-            todayItems.forEach(item => {
+            pendingItems.slice(0, 10).forEach(item => {
                 const statusColor = item.status === '판매완료' ? 'var(--success-color)' : 'var(--accent)';
                 const saleDateDisp = item.saleDate ? item.saleDate.split('-').map(part => part.slice(-2)).join('.') : '';
                 const compDateDisp = item.completionDate ? item.completionDate.split('-').map(part => part.slice(-2)).join('.') : '';
                 dashHTML += `
-                    <div class="list-row" onclick="handleEditPcSale('${item.id}')" style="padding:12px 24px;">
+                    <div class="list-row" onclick="handleEditPcSale('${item.id}')">
                         <div class="col-s v-bold c-accent">${item.id}</div>
                         <div class="col-s c-muted" style="font-size:12px;">${saleDateDisp}</div>
                         <div class="col-s c-muted" style="font-size:12px;">${compDateDisp}</div>
